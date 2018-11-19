@@ -1,14 +1,14 @@
 #!groovy
 
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.5.4-jdk-8'
-            args '--mount type=volume,source=ci-maven-home,target=/root/.m2'
-        }
-    }
+    //agent {
+    //    docker {
+    //        image 'maven:3.5.4-jdk-8'
+    //        args '--mount type=volume,source=ci-maven-home,target=/root/.m2'
+    //    }
+    //}
 
-	//agent any 
+	agent any 
 	
 	//tools { 
     //    maven 'Maven 3.6.0' 
