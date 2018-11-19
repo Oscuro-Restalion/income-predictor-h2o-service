@@ -23,6 +23,9 @@ public class H2OServiceImpl implements H2OService {
 
 	@Value("${model.path}")
 	private String modelPath;
+	
+	@Value("${model.file}")
+	private String filePath;
 
 	@Override
 	public OutputDto evaluate(IncomeDto input) {
@@ -32,7 +35,7 @@ public class H2OServiceImpl implements H2OService {
 			config.setConvertInvalidNumbersToNa(true);
 			config.setConvertUnknownCategoricalLevelsToNa(true);
 			config.setUseExtendedOutput(true);
-			config.setModel(MojoModel.load(modelPath));
+			config.setModel(MojoModel.load(modelPath.concat(filePath)));
 
 			EasyPredictModelWrapper model = new EasyPredictModelWrapper(config);
 
