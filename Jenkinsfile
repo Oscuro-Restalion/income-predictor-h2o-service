@@ -47,6 +47,7 @@ pipeline {
         }
 
         stage('Build Docker image') {
+        	agent any
             steps {
                 echo "-=- build Docker image -=-"
                 script {
@@ -56,6 +57,7 @@ pipeline {
         }
 
         stage('Run Docker image') {
+        	agent any
             steps {
                 echo "-=- run Docker image -=-"    
                 sh "docker rm -f ${env.TEST_CONTAINER_NAME}"
@@ -85,6 +87,7 @@ pipeline {
         }
 
         stage('Push Artifact') {
+        	agent any
             steps {
                 echo "-=- push Artifact -=-"
                 script {
