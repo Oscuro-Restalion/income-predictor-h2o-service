@@ -10,6 +10,11 @@ pipeline {
 
 	agent any 
 	
+	tools { 
+        maven 'Maven 3.5.4' 
+        jdk 'jdk8' 
+    }
+	
     environment {
         ORG_NAME = "oscuroweb"
         APP_NAME = "income-predictor-h2o-service"
