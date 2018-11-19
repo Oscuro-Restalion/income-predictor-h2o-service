@@ -1,14 +1,14 @@
 #!groovy
 
 pipeline {
-    //agent {
-    //    docker {
-    //        image 'maven:3.5.4-jdk-8'
-    //        args '--mount type=volume,source=ci-maven-home,target=/root/.m2'
-    //    }
-    //}
+    agent {
+        docker {
+            image 'maven:3.5.4-jdk-8'
+            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+        }
+    }
 
-	agent any 
+	//agent any 
 	
 	//tools { 
     //    maven 'Maven 3.6.0' 
@@ -27,22 +27,22 @@ pipeline {
         stage('Compile') {
             steps {
                 echo "-=- compiling project -=-"
-                //sh "mvn clean compile"
+                sh "mvn clean compile"
             }
         }
 
         stage('Unit tests') {
             steps {
                 echo "-=- execute unit tests -=-"
-                //sh "mvn test"
+                sh "mvn test"
             }
         }
 
         stage('Package') {
             steps {
                 echo "-=- packaging project -=-"
-                //sh "mvn package -DskipTests"
-                //archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                sh "mvn package -DskipTests"
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
 
@@ -59,7 +59,7 @@ pipeline {
             steps {
                 echo "-=- run Docker image -=-"    
                 sh "docker rm -f ${env.TEST_CONTAINER_NAME}"
-                sh "docker run -p 8082:8082 --network-alias=[income-predictor-service] -v ${env.LOCAL_PATH}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.TEST_CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run -p 8082:8082 --network ci -v ${env.LOCAL_PATH}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.TEST_CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
