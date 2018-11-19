@@ -1,13 +1,15 @@
 #!groovy
 
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.5.4-jdk-8'
-            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
-        }
-    }
+//    agent {
+//        docker {
+//            image 'maven:3.5.4-jdk-8'
+//            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+//        }
+//    }
 
+	agent any 
+	
     environment {
         ORG_NAME = "oscuroweb"
         APP_NAME = "income-predictor-h2o-service"
@@ -40,7 +42,6 @@ pipeline {
         }
 
         stage('Build Docker image') {
-        	agent any
             steps {
                 echo "-=- build Docker image -=-"
                 script {
@@ -50,7 +51,6 @@ pipeline {
         }
 
         stage('Run Docker image') {
-        	agent any
             steps {
                 echo "-=- run Docker image -=-"    
                 sh "docker rm -f ${env.TEST_CONTAINER_NAME}"
@@ -80,7 +80,6 @@ pipeline {
         }
 
         stage('Push Artifact') {
-        	agent any
             steps {
                 echo "-=- push Artifact -=-"
                 script {
