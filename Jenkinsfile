@@ -26,6 +26,8 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
+            	echo "PATH = ${PATH}"
+                echo "M2_HOME = ${M2_HOME}"
                 echo "-=- compiling project -=-"
                 sh "mvn clean compile"
             }
