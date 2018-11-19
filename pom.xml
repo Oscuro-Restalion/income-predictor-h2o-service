@@ -58,11 +58,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>oscuroweb.ia</groupId>
+			<groupId>ai.h2o</groupId>
 			<artifactId>h2o-genmodel</artifactId>
-			<version>1.0</version>
+			<version>3.22.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
