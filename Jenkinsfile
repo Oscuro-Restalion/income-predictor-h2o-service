@@ -34,7 +34,7 @@ pipeline {
         stage('Unit tests') {
             steps {
                 echo "-=- execute unit tests -=-"
-                sh "mvn test"
+                //sh "mvn test"
             }
         }
 
