@@ -7,13 +7,6 @@ pipeline {
             args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
         }
     }
-
-	//agent any 
-	
-	//tools { 
-    //    maven 'Maven 3.6.0' 
-    //    jdk 'jdk8' 
-    //}
 	
     environment {
         ORG_NAME = "oscuroweb"
