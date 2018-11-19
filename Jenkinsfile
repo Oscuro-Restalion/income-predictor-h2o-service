@@ -80,11 +80,14 @@ pipeline {
         }
 
         stage('Push Artifact') {
+        	agent any
             steps {
                 echo "-=- push Artifact -=-"
-                docker.withRegistry('https://hub.docker.com/u/oscurorestalion/', 'docker-hub') {
-        			image.push()
-        		}
+                script {
+                	docker.withRegistry('https://hub.docker.com/u/oscurorestalion/', 'docker-hub') {
+        				image.push()
+        			}    
+            	}
             }
         }
     }
