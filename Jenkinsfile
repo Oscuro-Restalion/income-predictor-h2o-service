@@ -1,19 +1,19 @@
 #!groovy
 
 pipeline {
-//    agent {
-//        docker {
-//            image 'maven:3.5.4-jdk-8'
-//            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
-//        }
-//    }
-
-	agent any 
-	
-	tools { 
-        maven 'Maven 3.6.0' 
-        jdk 'jdk8' 
+    agent {
+        docker {
+            image 'maven:3.5.4-jdk-8'
+            args '--mount type=volume,source=ci-maven-home,target=/root/.m2'
+        }
     }
+
+	//agent any 
+	
+	//tools { 
+    //    maven 'Maven 3.6.0' 
+    //    jdk 'jdk8' 
+    //}
 	
     environment {
         ORG_NAME = "oscuroweb"
@@ -26,8 +26,6 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-            	echo "PATH = ${PATH}"
-                echo "M2_HOME = ${M2_HOME}"
                 echo "-=- compiling project -=-"
                 sh "mvn clean compile"
             }
