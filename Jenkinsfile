@@ -1,26 +1,30 @@
 #!groovy
 
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.5.4-jdk-8'
-            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
-        }
-    }
+
+	agent any
 	
     parameters {
         string(name: 'localPath', defaultValue: '/Users/oscuro/workspace/commitconf2018/income-predictor-data', description: 'Local path of income predictor data')
     }
 
     environment {
-        ORG_NAME = "oscuroweb"
+        ORG_NAME = "oscurorestalion"
         APP_NAME = "income-predictor-h2o-service"
         APP_CONTEXT_ROOT = "oscuroweb"
         CONTAINER_NAME = "ci-${APP_NAME}"
+        IMAGE_NAME = "${ORG_NANE}/${APP_NAME}"
     }
 
     stages {
         stage('Compile') {
+        
+		    agent {
+		        docker {
+		            image 'maven:3.5.4-jdk-8'
+		            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+		        }
+		    }
             steps {
                 echo "-=- compiling project -=-"
                 sh "mvn clean compile"
@@ -28,6 +32,13 @@ pipeline {
         }
 
         stage('Unit tests') {
+        
+		    agent {
+		        docker {
+		            image 'maven:3.5.4-jdk-8'
+		            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+		        }
+		    }
             steps {
                 echo "-=- execute unit tests -=-"
                 //sh "mvn test"
@@ -35,6 +46,13 @@ pipeline {
         }
 
         stage('Package') {
+        
+		    agent {
+		        docker {
+		            image 'maven:3.5.4-jdk-8'
+		            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+		        }
+		    }
             steps {
                 echo "-=- packaging project -=-"
                 sh "mvn package -DskipTests"
@@ -43,21 +61,18 @@ pipeline {
         }
 
         stage('Build Docker image') {
-        	agent any
             steps {
                 echo "-=- build Docker image -=-"
                 script {
-                    def image = docker.build("${APP_NAME}:${env.BUILD_ID}")
+                    def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
         }
 
         stage('Run Docker image') {
-        	agent any
             steps {
                 echo "-=- run Docker image -=-"    
-                sh "docker rm -f ${env.CONTAINER_NAME}"
-                sh "docker run -p 8082:8082 --network ci -v ${localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run -p 8082:8082 --network ci -v ${localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.CONTAINER_NAME} -d ${IMAGE_NAME}:${env.BUILD_ID}"
             }
         }
 
@@ -76,6 +91,13 @@ pipeline {
         }
 
         stage('Dependency vulnerability tests') {
+        
+		    agent {
+		        docker {
+		            image 'maven:3.5.4-jdk-8'
+		            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
+		        }
+		    }
             steps {
                 echo "-=- run dependency vulnerability tests -=-"
                 sh "mvn dependency-check:check"
@@ -83,14 +105,12 @@ pipeline {
         }
 
         stage('Push Artifact') {
-        	agent any
             steps {
                 echo "-=- push Artifact -=-"
-                script {
-                	docker.withRegistry('https://hub.docker.com/u/oscurorestalion/', 'docker-hub') {
-        				image.push()
-        			}    
-            	}
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+                    sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
+                }
             }
         }
     }
