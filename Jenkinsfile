@@ -64,6 +64,8 @@ pipeline {
             steps {
                 echo "-=- build Docker image -=-"
                 script {
+                
+                    sh "mv ./target/${APP_NAME}*.jar ./data" 
                     def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
