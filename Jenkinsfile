@@ -13,7 +13,7 @@ pipeline {
         APP_NAME = "income-predictor-h2o-service"
         APP_CONTEXT_ROOT = "oscuroweb"
         CONTAINER_NAME = "ci-${APP_NAME}"
-        IMAGE_NAME = "${ORG_NANE}/${APP_NAME}"
+        IMAGE_NAME = "${ORG_NAME}/${APP_NAME}"
     }
 
     stages {
