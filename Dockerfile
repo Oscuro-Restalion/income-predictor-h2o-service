@@ -1,3 +1,3 @@
 FROM oracle/graalvm-ce:1.0.0-rc8
-COPY .target/income-predictor-h2o-service-0.0.1-SNAPSHOT.jar app.jar
+COPY ./target/income-predictor-h2o-service-0.0.1-SNAPSHOT.jar app.jar
 CMD java -jar -Dgraal.CompilerConfiguration=community app.jar
