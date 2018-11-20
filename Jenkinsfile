@@ -8,12 +8,15 @@ pipeline {
         }
     }
 	
+    parameters {
+        string(name: 'localPath', defaultValue: '/Users/oscuro/workspace/commitconf2018/income-predictor-data', description: 'Local path of income predictor data')
+    }
+
     environment {
         ORG_NAME = "oscuroweb"
         APP_NAME = "income-predictor-h2o-service"
         APP_CONTEXT_ROOT = "oscuroweb"
-        TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
-        LOCAL_PATH = "/Users/oscuro/workspace/commitconf2018/income-predictor-data/"
+        CONTAINER_NAME = "ci-${APP_NAME}"
     }
 
     stages {
@@ -53,8 +56,8 @@ pipeline {
         	agent any
             steps {
                 echo "-=- run Docker image -=-"    
-                sh "docker rm -f ${env.TEST_CONTAINER_NAME}"
-                sh "docker run -p 8082:8082 --network ci -v ${env.LOCAL_PATH}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.TEST_CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker rm -f ${env.CONTAINER_NAME}"
+                sh "docker run -p 8082:8082 --network ci -v ${localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${env.CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
