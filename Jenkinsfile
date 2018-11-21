@@ -78,7 +78,7 @@ pipeline {
         stage('Run Docker image') {
             steps {
                 echo "-=- run Docker image -=-"    
-                sh "docker run -p 8082:8082 --network ci -v ${localPath}:/data/income-predictor -e MODEL_PATH=/data/income-predictor --name ${env.CONTAINER_NAME} -d ${IMAGE_NAME}:${env.BUILD_ID}"
+                sh "docker run -p 8082:8082 --network ci -v ${localPath}:/data/income-predictor -e MODEL_PATH=/data/income-predictor/output-data --name ${env.CONTAINER_NAME} -d ${IMAGE_NAME}:${env.BUILD_ID}"
             }
         }
 
