@@ -12,7 +12,7 @@ pipeline {
         ORG_NAME = "oscurorestalion"
         APP_NAME = "income-predictor-h2o-service"
         APP_CONTEXT_ROOT = "oscuroweb"
-        CONTAINER_NAME = "ci-${APP_NAME}"
+        CONTAINER_NAME = "ci-income-predictor-service"
         IMAGE_NAME = "${ORG_NAME}/${APP_NAME}"
     }
 

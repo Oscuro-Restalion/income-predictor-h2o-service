@@ -35,7 +35,7 @@ public class H2OServiceImpl implements H2OService {
 			config.setConvertInvalidNumbersToNa(true);
 			config.setConvertUnknownCategoricalLevelsToNa(true);
 			config.setUseExtendedOutput(true);
-			config.setModel(MojoModel.load(modelPath.concat(modelFile)));
+			config.setModel(MojoModel.load(modelPath + modelFile));
 
 			EasyPredictModelWrapper model = new EasyPredictModelWrapper(config);
 
@@ -67,7 +67,7 @@ public class H2OServiceImpl implements H2OService {
 			return output;
 
 		} catch (IOException e) {
-			log.error("Unable to find H2O model zip file '{}'", modelPath);
+			log.error("Unable to find H2O model zip file '{}'", modelPath + modelFile);
 			return OutputDto.builder().build();
 		} catch (PredictException e) {
 			log.error("An error ocurred running model '{}' :: {}", e.getMessage());
