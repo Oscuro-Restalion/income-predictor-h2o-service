@@ -67,7 +67,6 @@ pipeline {
                     step ([
                     	$class: "CopyArtifact",
                  		projectName: "${JOB_NAME}",
-                 		target: "target",
                  		selector: [$class: "SpecificBuildSelector", buildNumber: "${BUILD_NUMBER}"]
              		])
              		
