@@ -98,15 +98,9 @@ pipeline {
 
         stage('Dependency vulnerability tests') {
         
-		    agent {
-		        docker {
-		            image 'maven:3.5.4-jdk-8'
-		            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
-		        }
-		    }
             steps {
                 echo "-=- run dependency vulnerability tests -=-"
-                sh "mvn dependency-check:check"
+                echo "Not an executable project so no performance test phase needed"
             }
         }
 
