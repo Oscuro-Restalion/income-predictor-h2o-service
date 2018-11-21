@@ -57,15 +57,15 @@ pipeline {
                 echo "-=- packaging project -=-"
                 sh "mvn package -DskipTests"
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                script {
+                    def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                }
             }
         }
 
         stage('Build Docker image') {
             steps {
                 echo "-=- build Docker image -=-"
-                script {
-                    def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
-                }
             }
         }
 
