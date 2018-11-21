@@ -65,12 +65,12 @@ pipeline {
                 echo "-=- build Docker image -=-"
                 script {
                     step ([
-                    	$class: 'CopyArtifact',
-                 		projectName: '${JOB_NAME}',
+                    	$class: "CopyArtifact",
+                 		projectName: "${JOB_NAME}",
                  		filter: "*.jar",
-                 		target: 'target',
-                 		selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
-             		]);
+                 		target: "target",
+                 		selector: [$class: "SpecificBuildSelector", buildNumber: "${BUILD_NUMBER}"]
+             		])
              		
                     def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
