@@ -63,15 +63,15 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 echo "-=- build Docker image -=-"
-                copyArtifacts(
-                        filter: '*.jar',
-                        fingerprintArtifacts: true,
-                        projectName: '${JOB_NAME}',
-                        target: 'target',
-                        selector: specific("${${BUILD_NUMBER}}"))
-	                //sh 'mv *.jar target/'
-	            
                 script {
+                    step ([
+                    	$class: 'CopyArtifact',
+                 		projectName: '${JOB_NAME}',
+                 		filter: "*.jar",
+                 		target: 'target',
+                 		selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
+             		]);
+             		
                     def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
