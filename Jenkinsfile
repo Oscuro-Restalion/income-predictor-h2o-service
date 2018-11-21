@@ -64,13 +64,13 @@ pipeline {
             steps {
                 echo "-=- build Docker image -=-"
                 steps {
-	                step([  $class: 'CopyArtifact',
+	                copyArtifacts(
 	                        filter: '*.jar',
 	                        fingerprintArtifacts: true,
 	                        projectName: '${JOB_NAME}',
-	                        selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
-	                ])
-	                sh 'mv *.jar target/'
+	                        target: 'target',
+	                        selector: specific("${${BUILD_NUMBER}}"))
+	                //sh 'mv *.jar target/'
 	            }
                 script {
                     def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
