@@ -118,7 +118,7 @@ pipeline {
     post {
         always {
             echo "-=- remove deployment -=-"
-            echo "Not an executable project so no Docker image needed"
+            sh "docker stop ${env.CONTAINER_NAME}"
         }
     }
 }
