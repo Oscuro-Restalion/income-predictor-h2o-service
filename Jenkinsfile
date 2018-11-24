@@ -109,7 +109,7 @@ pipeline {
                 echo "-=- push Artifact -=-"
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
-                    sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
+                    //sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
                 }
             }
         }
